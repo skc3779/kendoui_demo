@@ -21,15 +21,10 @@
   </script>
 </head>
 <body ng-app="MyApp">
-<script src="../scripts/products.js"></script>
+<script src="../../scripts/products.js"></script>
 <script>
   function MyCtrl($scope) {
     $scope.gridColumns = [
-      {
-        field: "Discontinued",
-        template: "<input name='Discontinued' class='checkbox' type='checkbox' data-bind='checked: Discontinued' #= Discontinued ? checked='checked' : '' # />",
-        width: "32px"
-      },
       { field: "ProductName" } ,
       { field: "UnitPrice", title: "Unit Price", format: "{0:c}", width: "130px" },
       { field: "UnitsInStock", title: "Units In Stock", width: "130px" },
@@ -46,22 +41,27 @@
       selectable: true
     };
     
-    $("#itemChange").click(function(){
+    $("#itemDisplay").click(function(){
       var grid = $("#grid").data("kendoGrid");
-      grid.items().each(function(idx) {
+      grid.items().each(function(idx){
         var item = grid.dataItem($(this));
-        if(item.UnitPrice > 20.0) {
-          console.log(item.ProductName);
-          item.Discontinued = true;
-        }
+        console.log(item);
       });
 
-      // $scope.$apply() template field 는 작동이 안됨
-      // http://jimhoskins.com/2012/12/17/angularjs-and-apply.html 블로그 참고바람
-      $scope.$apply();
+    });
 
-      grid.dataSource.read();
-      grid.refresh();
+    $("#itemChange").click(function(){
+      console.log( $scope.gridData);
+      var grid = $("#grid").data("kendoGrid");
+      grid.items().each(function(idx){
+        var item = grid.dataItem($(this));
+        // item.ProductName = item.ProductName +  " ...";
+        item.set("ProductName", item.ProductName +  " ...");
+      });
+      //
+     // $scope.$apply();
+ /*     grid.dataSource.read();
+      grid.refresh();*/
     });
   }
 </script>
@@ -71,7 +71,8 @@
        k-options="mainGridOptions"
        k-columns="gridColumns"
        k-data-source="gridData" ></div>
-  <button id="itemChange"> Unit Price가 $20 이상이면 체크하세요.</button>
+  <button id="itemDisplay"> 아이템을 출력하세요. </button>
+  <button id="itemChange"> 아이템을 변경합니다. </button>
 </div>
 
 </body>

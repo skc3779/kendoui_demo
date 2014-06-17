@@ -21,58 +21,46 @@
   </script>
 </head>
 <body ng-app="MyApp">
-<script src="../scripts/products.js"></script>
+<script src="../../scripts/products.js"></script>
 <script>
   function MyCtrl($scope) {
-    $scope.gridColumns = [
-      { field: "ProductName" } ,
-      { field: "UnitPrice", title: "Unit Price", format: "{0:c}", width: "130px" },
-      { field: "UnitsInStock", title: "Units In Stock", width: "130px" },
-      { field: "Discontinued", width: "130px" }
-    ];
-
-    $scope.gridData = new kendo.data.ObservableArray(products);
-
     $scope.mainGridOptions = {
+      dataSource: {
+        data: products,
+        schema: {
+          model: {
+            fields: {
+              ProductName: { type: "string" },
+              UnitPrice: { type: "number" },
+              UnitsInStock: { type: "number" },
+              Discontinued: { type: "boolean" }
+            }
+          }
+        }
+      },
       height: 550,
       scrollable: true,
       sortable: true,
       filterable: true,
-      selectable: true
+      columns: [
+        "ProductName",
+        { field: "UnitPrice", title: "Unit Price", format: "{0:c}", width: "130px" },
+        { field: "UnitsInStock", title: "Units In Stock", width: "130px" },
+        { field: "Discontinued", width: "130px" }
+      ]
     };
-    
+
     $("#itemDisplay").click(function(){
       var grid = $("#grid").data("kendoGrid");
-      grid.items().each(function(idx){
-        var item = grid.dataItem($(this));
-        console.log(item);
-      });
 
-    });
 
-    $("#itemChange").click(function(){
-      console.log( $scope.gridData);
-      var grid = $("#grid").data("kendoGrid");
-      grid.items().each(function(idx){
-        var item = grid.dataItem($(this));
-        // item.ProductName = item.ProductName +  " ...";
-        item.set("ProductName", item.ProductName +  " ...");
-      });
-      //
-     // $scope.$apply();
- /*     grid.dataSource.read();
-      grid.refresh();*/
     });
   }
 </script>
 
 <div ng-controller="MyCtrl">
-  <div kendo-grid id="grid"
-       k-options="mainGridOptions"
-       k-columns="gridColumns"
-       k-data-source="gridData" ></div>
+  <div kendo-grid id="grid" k-options="mainGridOptions" ></div>
   <button id="itemDisplay"> 아이템을 출력하세요. </button>
-  <button id="itemChange"> 아이템을 변경합니다. </button>
 </div>
 
 </body>
