@@ -1,0 +1,74 @@
+<!doctype html>
+<html>
+<head>
+  <style>
+    @import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
+    html { font-size: 12px; font-family: NanumGothic, Arial, Helvetica, sans-serif; }
+  </style>
+  <meta charset="utf-8">
+  <title> columns.headerTemplate String|Function </title>
+  <link rel="stylesheet" href="http://cdn.kendostatic.com/2014.1.528/styles/kendo.common.min.css">
+  <link rel="stylesheet" href="http://cdn.kendostatic.com/2014.1.528/styles/kendo.rtl.min.css">
+  <link rel="stylesheet" href="http://cdn.kendostatic.com/2014.1.528/styles/kendo.silver.min.css">
+  <link rel="stylesheet" href="http://cdn.kendostatic.com/2014.1.528/styles/kendo.silver.mobile.min.css">
+  <link rel="stylesheet" href="http://cdn.kendostatic.com/2014.1.528/styles/kendo.dataviz.min.css">
+  <link rel="stylesheet" href="http://cdn.kendostatic.com/2014.1.528/styles/kendo.dataviz.default.min.css">
+
+  <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+  <script src="http://cdn.kendostatic.com/2014.1.528/js/kendo.all.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular-route.js"></script>
+  <script src="http://kendo-labs.github.io/angular-kendo/angular-kendo.js"></script>
+  <script>
+    angular.module("MyApp", [ "kendo.directives" ]);
+  </script>
+</head>
+<body ng-app="MyApp">
+<script src="../../../scripts/products.js"></script>
+<script>
+  function MyCtrl($scope) {
+    $scope.gridColumns = [
+      {
+        field: "",
+        headerTemplate: '<input type="checkbox" id="check-all" /><label for="check-all">Check All</label>',
+        template: '<input type="checkbox" class="checkbox"/>',
+        width: 100
+      },
+      {
+        field: "name"
+      },
+      {
+        field: "age"
+      }
+    ];
+
+    $scope.gridData = new kendo.data.ObservableArray([
+      { name: "Jane Doe", age: 30 },
+      { name: "John Doe", age: 30 },
+      { name: "Jane Doe2", age: 40 },
+      { name: "John Doe2", age: 40 },
+      { name: "Jane Doe3", age: 50 },
+      { name: "John Doe4", age: 50 }
+    ]);
+
+    $scope.mainGridOptions = {
+    };
+
+    $("#itemChange").click(function(){
+    });
+  }
+</script>
+<pre>
+  The template which renders the column header content.
+  By default the value of the title column option is displayed in the column header cell.
+</pre>
+<div ng-controller="MyCtrl">
+  <div kendo-grid id="grid"
+       k-options="mainGridOptions"
+       k-columns="gridColumns"
+       k-data-source="gridData" ></div>
+  <button id="itemChange"> 미정의.</button>
+</div>
+
+</body>
+</html>

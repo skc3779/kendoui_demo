@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+<head>
+  <style>
+    @import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
+    html { font-size: 12px; font-family: NanumGothic, Arial, Helvetica, sans-serif; }
+  </style>
+  <meta charset="utf-8">
+  <title> columns.groupHeaderTemplate String|Function </title>
+  <link rel="stylesheet" href="http://cdn.kendostatic.com/2014.1.528/styles/kendo.common.min.css">
+  <link rel="stylesheet" href="http://cdn.kendostatic.com/2014.1.528/styles/kendo.rtl.min.css">
+  <link rel="stylesheet" href="http://cdn.kendostatic.com/2014.1.528/styles/kendo.silver.min.css">
+  <link rel="stylesheet" href="http://cdn.kendostatic.com/2014.1.528/styles/kendo.silver.mobile.min.css">
+  <link rel="stylesheet" href="http://cdn.kendostatic.com/2014.1.528/styles/kendo.dataviz.min.css">
+  <link rel="stylesheet" href="http://cdn.kendostatic.com/2014.1.528/styles/kendo.dataviz.default.min.css">
+
+  <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+  <script src="http://cdn.kendostatic.com/2014.1.528/js/kendo.all.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular-route.js"></script>
+  <script src="http://kendo-labs.github.io/angular-kendo/angular-kendo.js"></script>
+  <script>
+    angular.module("MyApp", [ "kendo.directives" ]);
+  </script>
+</head>
+<body ng-app="MyApp">
+<script src="../../../scripts/products.js"></script>
+<script>
+
+  function MyCtrl($scope) {
+    $scope.gridColumns = [
+      { field: "name" },
+      { field: "age",
+        groupHeaderTemplate: "Age: #= value # total: #= count #"
+      }
+    ];
+
+    $scope.gridData = new kendo.data.DataSource({
+      data: [
+        { name: "Jane Doe1", age: 30 },
+        { name: "John Doe1", age: 30 },
+        { name: "Jane Doe1", age: 40 },
+        { name: "John Doe1", age: 40 },
+        { name: "Jane Doe1", age: 50 },
+        { name: "John Doe1", age: 50 }
+      ],
+      group: { field: "age", aggregates: [ { field: "age", aggregate: "count" }] }
+    });
+
+    $scope.mainGridOptions = {
+      groupable: true
+    };
+
+    $("#itemChange").click(function(){
+    });
+  }
+</script>
+<pre>
+  The template which renders the group header when the grid is grouped by the column field.
+  By default the name of the field and the current group value is displayed.
+  The fields which can be used in the template are:
+  value - the current group value
+  average - the value of the "average" aggregate (if specified)
+  count - the value of the "count" aggregate (if specified)
+  max - the value of the "max" aggregate (if specified)
+  min - the value of the "min" aggregate (if specified)
+  sum - the value of the "sum" aggregate (if specified)
+</pre>
+<div ng-controller="MyCtrl">
+  <div kendo-grid id="grid"
+       k-options="mainGridOptions"
+       k-columns="gridColumns"
+       k-data-source="gridData" ></div>
+  <button id="itemChange"> 미정의.</button>
+</div>
+
+</body>
+</html>

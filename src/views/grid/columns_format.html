@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+<head>
+  <style>html { font-size: 12px; font-family: Arial, Helvetica, sans-serif; }</style>
+  <meta charset="utf-8">
+  <title> columns.format String </title>
+  <link rel="stylesheet" href="http://cdn.kendostatic.com/2014.1.528/styles/kendo.common.min.css">
+  <link rel="stylesheet" href="http://cdn.kendostatic.com/2014.1.528/styles/kendo.rtl.min.css">
+  <link rel="stylesheet" href="http://cdn.kendostatic.com/2014.1.528/styles/kendo.silver.min.css">
+  <link rel="stylesheet" href="http://cdn.kendostatic.com/2014.1.528/styles/kendo.silver.mobile.min.css">
+  <link rel="stylesheet" href="http://cdn.kendostatic.com/2014.1.528/styles/kendo.dataviz.min.css">
+  <link rel="stylesheet" href="http://cdn.kendostatic.com/2014.1.528/styles/kendo.dataviz.default.min.css">
+
+  <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+  <script src="http://cdn.kendostatic.com/2014.1.528/js/kendo.all.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular-route.js"></script>
+  <script src="http://kendo-labs.github.io/angular-kendo/angular-kendo.js"></script>
+  <script>
+    angular.module("MyApp", [ "kendo.directives" ]);
+  </script>
+</head>
+<body ng-app="MyApp">
+<script src="../../../scripts/products.js"></script>
+<script>
+  /**
+   * 데이터필드 포멧에 대한 예제 샘플
+   * 관련 API URL :
+   * http://docs.telerik.com/kendo-ui/api/framework/kendo#standard-date-formats
+   * http://docs.telerik.com/kendo-ui/api/framework/kendo#standard-number-formats
+   * @param $scope
+   * @constructor
+   */
+  function MyCtrl($scope) {
+    $scope.gridColumns = [ {
+      field: "date",
+      format: "{0: yyyy-MM-dd HH:mm:ss}"
+    }, {
+      field: "number",
+      format: "{0:c}"
+    } ];
+
+    $scope.gridData = new kendo.data.ObservableArray([ { date: new Date(), number: 3.1415 } ]);
+
+    $scope.mainGridOptions = {
+      filterable: true
+    };
+
+    $("#itemChange").click(function(){
+    });
+  }
+</script>
+
+<div ng-controller="MyCtrl">
+  <div kendo-grid id="grid"
+       k-options="mainGridOptions"
+       k-columns="gridColumns"
+       k-data-source="gridData" ></div>
+  <button id="itemChange"> 미정의.</button>
+</div>
+
+</body>
+</html>
