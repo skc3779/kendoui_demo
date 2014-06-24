@@ -26,7 +26,13 @@
 <body ng-app="MyApp">
 <script>
   function MyCtrl($scope) {
-
+    /**
+     * 출처 : http://jsfromhell.com/string/mask
+     * 예제 : "D123".mask("#-###"), "D 23".mask("#-###")
+     * 결과 : "D-123", "D- 23"
+     * @param m
+     * @returns {string}
+     */
     String.prototype.mask = function (m) {
       var m, l = (m = m.split("")).length, s = this.split(""), j = 0, h = "";
       for(var i = -1; ++i < l;)
@@ -40,6 +46,18 @@
           (s[j] = h + s[j++]) && (h = "");
         }
       return s.join("") + h;
+    };
+
+    /**
+     * 출처 : http://jsfromhell.com/string/trim
+     * 예제 : "....abc****".trim(".*")
+     * 결과 : "abc"
+     * @param c
+     * @param t
+     */
+    String.prototype.trim = function(c, t){
+      return c = "[" + (c == undefined ? " " : c.replace(/([\^\]\\-])/g, "\\$1")) + "]+",
+          this.replace(new RegExp((t != 2 ? "^" : "") + c + (t != 1 ? "|" + c + "$" : ""), "g"), "");
     };
 
     $scope.mainGridOptions = {
