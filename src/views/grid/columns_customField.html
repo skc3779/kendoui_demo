@@ -1,0 +1,134 @@
+<!doctype html>
+<html>
+<head>
+  <style>
+    @import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
+    html { font-size: 12px; font-family: NanumGothic, Arial, Helvetica, sans-serif; }
+  </style>
+  <meta charset="utf-8">
+  <title> columns.customField and Mask String|Function </title>
+  <link rel="stylesheet" href="http://cdn.kendostatic.com/2014.1.528/styles/kendo.common.min.css">
+  <link rel="stylesheet" href="http://cdn.kendostatic.com/2014.1.528/styles/kendo.rtl.min.css">
+  <link rel="stylesheet" href="http://cdn.kendostatic.com/2014.1.528/styles/kendo.silver.min.css">
+  <link rel="stylesheet" href="http://cdn.kendostatic.com/2014.1.528/styles/kendo.silver.mobile.min.css">
+  <link rel="stylesheet" href="http://cdn.kendostatic.com/2014.1.528/styles/kendo.dataviz.min.css">
+  <link rel="stylesheet" href="http://cdn.kendostatic.com/2014.1.528/styles/kendo.dataviz.default.min.css">
+
+  <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+  <script src="http://cdn.kendostatic.com/2014.1.528/js/kendo.all.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular-route.js"></script>
+  <script src="http://kendo-labs.github.io/angular-kendo/angular-kendo.js"></script>
+  <script>
+    angular.module("MyApp", [ "kendo.directives" ]);
+  </script>
+</head>
+<body ng-app="MyApp">
+<script>
+  function MyCtrl($scope) {
+    /**
+     * 출처 : http://jsfromhell.com/string/mask
+     * 예제 : "D123".mask("#-###"), "D 23".mask("#-###")
+     * 결과 : "D-123", "D- 23"
+     * @param m
+     * @returns {string}
+     */
+    String.prototype.mask = function (m) {
+      var m, l = (m = m.split("")).length, s = this.split(""), j = 0, h = "";
+      for(var i = -1; ++i < l;)
+        if(m[i] != "#"){
+          if(m[i] == "\\" && (h += m[++i])) continue;
+          h += m[i];
+          i + 1 == l && (s[j - 1] += h, h = "");
+        }
+        else{
+          if(!s[j] && !(h = "")) break;
+          (s[j] = h + s[j++]) && (h = "");
+        }
+      return s.join("") + h;
+    };
+
+    /**
+     * 출처 : http://jsfromhell.com/string/trim
+     * 예제 : "....abc****".trim(".*")
+     * 결과 : "abc"
+     * @param c
+     * @param t
+     */
+    String.prototype.trim = function(c, t){
+      return c = "[" + (c == undefined ? " " : c.replace(/([\^\]\\-])/g, "\\$1")) + "]+",
+          this.replace(new RegExp((t != 2 ? "^" : "") + c + (t != 1 ? "|" + c + "$" : ""), "g"), "");
+    };
+
+    $scope.mainGridOptions = {
+      dataSource: {
+        pageSize: 20,
+        transport: {
+          read: "../../scripts/products2.json"
+        },
+        autoSync: true,
+        schema: {
+          model: {
+            id: "ProductID",
+            fields: {
+              ProductID: { editable: false, nullable: true },
+              ProductName: { validation: { required: true } },
+              ProductCode: { validation: { required: true }},
+              Category: { defaultValue: { CategoryID: 1, CategoryName: "Beverages"} },
+              UnitPrice: { type: "number", validation: { required: true, min: 1} }
+            }
+          }
+        }
+      },
+      pageable: true,
+      height: 550,
+      toolbar: ["create"],
+      columns: [
+        { field:"ProductName",title:"Product Name" },
+        //{ field:"ProductCode",title:"Product Code" , editor: productCodeMaskedTextBox, template: "#: ProductCode.mask('#-####') #" },
+        { field:"ProductCode",title:"Product Code" , editor: productCodeMaskedTextBox, template: function(dataItem){
+          var originalString = dataItem.ProductCode;
+          return originalString.mask("#-####");
+        }},
+        { field: "Category", title: "Category", width: "180px", editor: categoryDropDownEditor, template: "#=Category.CategoryName#" },
+        { field: "UnitPrice", title:"Unit Price", format: "{0:c}", width: "130px" },
+        { command: "destroy", title: " ", width: "120px" }],
+      editable: true
+    };
+
+    function productCodeMaskedTextBox(container, options) {
+      $('<input data-bind="value:' + options.field + '"/>')
+          .appendTo(container)
+          .kendoMaskedTextBox({
+            autoBind: true,
+            mask:"A-####"
+          });
+    }
+    function categoryDropDownEditor(container, options) {
+      console.log(container);
+      $('<input required data-text-field="CategoryName" data-value-field="CategoryID" data-bind="value:' + options.field + '"/>')
+          .appendTo(container)
+          .kendoDropDownList({
+            autoBind: false,
+            dataSource: {
+              type: "odata",
+              transport: {
+                read: "http://demos.telerik.com/kendo-ui/service/Northwind.svc/Categories"
+              }
+            }
+          });
+    }
+  }
+</script>
+<pre>
+ Grid Columns에 Custom Field를 사용하는 방법에 대해 알아 본다.
+  1. ProductCode 는 Mask 변환함수와 kendoMaskedTextBox 컴포넌트를 적용한 예제
+  2. Category는 kendoDropDownList 컴포넌트를 적용한 예제
+</pre>
+<div ng-controller="MyCtrl">
+  <div kendo-grid id="grid"
+       k-options="mainGridOptions"></div>
+</div>
+
+</body>
+</html>
