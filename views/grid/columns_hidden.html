@@ -3,7 +3,7 @@
 <head>
   <style>html { font-size: 12px; font-family: Arial, Helvetica, sans-serif; }</style>
   <meta charset="utf-8">
-  <title> columns.headerAttributes Object </title>
+  <title> columns.hidden Boolean(default: false) </title>
   <link rel="stylesheet" href="http://cdn.kendostatic.com/2014.1.528/styles/kendo.common.min.css">
   <link rel="stylesheet" href="http://cdn.kendostatic.com/2014.1.528/styles/kendo.rtl.min.css">
   <link rel="stylesheet" href="http://cdn.kendostatic.com/2014.1.528/styles/kendo.silver.min.css">
@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="http://cdn.kendostatic.com/2014.1.528/styles/kendo.dataviz.min.css">
   <link rel="stylesheet" href="http://cdn.kendostatic.com/2014.1.528/styles/kendo.dataviz.default.min.css">
 
-  <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+  <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
   <script src="http://cdn.kendostatic.com/2014.1.528/js/kendo.all.min.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular-route.js"></script>
@@ -21,7 +21,7 @@
   </script>
 </head>
 <body ng-app="MyApp">
-<script src="../../../scripts/products.js"></script>
+<script src="../../build/data/products.js"></script>
 <script>
   function MyCtrl($scope) {
     $scope.gridColumns = [
@@ -32,7 +32,10 @@
           style: "text-align: center; font-size: 16px; font-weight:bold;"
         }
       },
-      { field: "age"}
+      {
+        field: "age"
+        /*, hidden: true */
+      }
     ];
 
     $scope.gridData = new kendo.data.ObservableArray([
@@ -48,12 +51,15 @@
     };
 
     $("#itemChange").click(function(){
+      var g = $("#grid").data("kendoGrid");
+      console.log(g);
     });
+
+
   }
 </script>
 <pre>
-  HTML attributes of the column header. The grid renders a table header cell (<th>) for every column.
-  The headerAttributes option can be used to set the HTML attributes of that th.
+  If set to true the column will not be displayed in the grid. By default all columns are displayed.
 </pre>
 <div ng-controller="MyCtrl">
   <div kendo-grid id="grid"

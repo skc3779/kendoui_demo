@@ -1,0 +1,91 @@
+<!doctype html>
+<html>
+<head>
+  <style>html { font-size: 12px; font-family: Arial, Helvetica, sans-serif; }</style>
+  <meta charset="utf-8">
+  <title> columns.format String </title>
+  <link rel="stylesheet" href="http://cdn.kendostatic.com/2014.1.528/styles/kendo.common.min.css">
+  <link rel="stylesheet" href="http://cdn.kendostatic.com/2014.1.528/styles/kendo.rtl.min.css">
+  <link rel="stylesheet" href="http://cdn.kendostatic.com/2014.1.528/styles/kendo.silver.min.css">
+  <link rel="stylesheet" href="http://cdn.kendostatic.com/2014.1.528/styles/kendo.silver.mobile.min.css">
+  <link rel="stylesheet" href="http://cdn.kendostatic.com/2014.1.528/styles/kendo.dataviz.min.css">
+  <link rel="stylesheet" href="http://cdn.kendostatic.com/2014.1.528/styles/kendo.dataviz.default.min.css">
+  <link href="/build/styles/console.css" rel="stylesheet" type="text/css" />
+  <script src="//code.jquery.com/jquery-1.9.1.min.js"></script>
+  <script src="//cdn.kendostatic.com/2014.1.528/js/kendo.all.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular-route.js"></script>
+  <script src="//kendo-labs.github.io/angular-kendo/angular-kendo.js"></script>
+  <script src="/build/js/console.js"></script>
+  <script>
+    angular.module("MyApp", [ "kendo.directives" ]);
+  </script>
+</head>
+<body ng-app="MyApp">
+<script src="../../../scripts/products.js"></script>
+<script>
+  /**
+   * 데이터필드 포멧에 대한 예제 샘플
+   * 관련 API URL :
+   * http://docs.telerik.com/kendo-ui/api/framework/kendo#standard-date-formats
+   * http://docs.telerik.com/kendo-ui/api/framework/kendo#standard-number-formats
+   * @param $scope
+   * @constructor
+   */
+  function MyCtrl($scope, $http) {
+    $scope.hello = "Hello from Controller!";
+    $scope.tabStrip = {
+      tab: {},
+      value:"none",
+      onSelect: function() {
+        console.log("tab", this.tab.select());
+        kendoConsole.log("onSelect tab name : "+this.tab.select().attr("name"));
+      },
+      onActivate: function() {
+        console.log("tab", this.tab.select());
+        kendoConsole.log("onActivate tab name : "+this.tab.select().attr("name"));
+        $http.get('/scripts/products.json', {responseText:'json'}).success($.proxy(this.successCallback, this));
+      },
+      successCallback: function(data) {
+        console.log("success", this.value, data[0].ProductName, this.tab.select().attr("name"));
+        this.value = this.tab.select().attr("name");
+      }
+    };
+
+    $scope.test = function() {
+      kendoConsole.log(angular.toJson(products));
+    }
+  }
+</script>
+
+<div ng-controller="MyCtrl">
+  <div kendo-tab-strip="tabStrip.tab" k-on-select="tabStrip.onSelect()"
+       k-on-activate="tabStrip.onActivate()" k-content-urls="[ null, null, 'loremIpsum.html' ]">
+    <!-- tab list -->
+    <ul>
+      <li name="tab1" class="k-state-active">First tab</li>
+      <li name="tab2">Second tab</li>
+      <li name="tab3">Ajax content</li>
+    </ul>
+
+    <div style="padding: 1em">
+      This is the first tab
+    </div>
+
+    <div style="padding: 1em">
+      This is the second tab
+    </div>
+
+    <div></div>
+  </div>
+  <input type="text" ng-model="tabStrip.value" />
+  <button ng-click="test()" >테스트</button>
+</div>
+
+<div class="box">
+  <h4>Console log</h4>
+  <div class="console"></div>
+</div>
+
+</body>
+</html>

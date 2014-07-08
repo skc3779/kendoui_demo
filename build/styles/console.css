@@ -1,0 +1,153 @@
+/*console*/
+
+.console
+{
+    background-color: transparent;
+    color: #333;
+    font: 11px '나눔고딕', Consolas, Monaco, "Bitstream Vera Sans Mono", "Courier New", Courier, monospace;
+    margin: 0;
+    overflow-x: hidden;
+    text-align: left;
+    height: 100px;
+    min-width: 300px;
+    border: 1px solid rgba(20,53,80,0.1);
+    background-color: #ffffff;
+}
+
+.demo-section .box-col .console
+{
+    width: 500px;
+}
+
+.console .count,
+.km-root .km-android .console .count
+{
+    background-color: #91AFEF;
+    -moz-border-radius: 15px;
+    -webkit-border-radius: 15px;
+    border-radius: 15px;
+    color: #FFFFFF;
+    font-size: 10px;
+    margin-left: 5px;
+    padding: 2px 6px 2px 5px;
+}
+
+.console div
+{
+    background-position: 6px -95px;
+    border-bottom: 1px solid #DDD;
+    padding: 5px 5px 4px 24px;
+}
+
+.console .error
+{
+    background-position: 6px -135px;
+}
+
+/* ##################### BOX ##################### */
+.box {
+    margin: 0.5em 0em;
+    padding: 1em;
+    background-color: rgba(20,53,80,0.038);
+    border: 1px solid rgba(20,53,80,0.05);
+}
+.demo-section {
+    margin: 4.5em auto;
+    padding: 3em;
+    border: 1px solid rgba(20,53,80,0.05);
+}
+.box:after,
+.demo-section:after {
+    content: "";
+    display: block;
+    clear: both;
+    height: 0;
+}
+#example .box {
+    margin: 4.5em auto;
+}
+.box.k-header,
+.demo-section.k-header {
+    background-position: 50% 70%;
+}
+.box h4,
+.demo-section h4 {
+    margin-bottom: 1em;
+    font-size: 12px;
+    line-height: 0em;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+.box-col {
+    display: block;
+    float: left;
+    padding: 0 3em 1em 0;
+}
+
+.box li,
+.demo-section .box-col li {
+    margin-bottom: .6em;
+}
+.box li:last-child {
+    margin-bottom: 0;
+}
+
+.box li a {
+    font-size: 13px;
+}
+
+.box .k-widget {
+    background-color: #ebeef0;
+    border-color: #ccc;
+    color: #7c7c7c;
+}
+
+.box .k-button {
+    cursor: pointer;
+    border-radius: 2px;
+    padding: 2px 6px;
+    font-size: inherit;
+    color: #333;
+    background: #e1e5ea;
+    border-color: #c2ccd4;
+}
+
+.box .k-button:hover {
+    background: #c2ccd4;
+    color: #000;
+}
+
+.box .k-primary {
+    color: #fff;
+    background: #015991;
+    border-color: #015991;
+}
+
+.box .k-primary:hover {
+    background: #013A5E;
+    color: #fff;
+}
+
+.box .k-textbox,
+.box textarea {
+    background: #fff;
+    border-color: #ccc;
+    color: #555;
+    border-radius: 0;
+}
+
+.box .k-textbox:hover,
+.box .k-textbox:active,
+.box textarea:hover,
+.box textarea:active {
+    border-color: #999;
+    background: #fff;
+    color: #333;
+}
+
+.demo-hint {
+    line-height: 22px;
+    color: #aaa;
+    font-style: italic;
+    font-size: .9em;
+}

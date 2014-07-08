@@ -21,46 +21,57 @@
   </script>
 </head>
 <body ng-app="MyApp">
-<script src="../../scripts/products.js"></script>
+<script src="../../build/data/products.js"></script>
 <script>
   function MyCtrl($scope) {
-    $scope.mainGridOptions = {
-      dataSource: {
-        data: products,
-        schema: {
-          model: {
-            fields: {
-              ProductName: { type: "string" },
-              UnitPrice: { type: "number" },
-              UnitsInStock: { type: "number" },
-              Discontinued: { type: "boolean" }
-            }
-          }
-        }
+    $scope.gridColumns = [
+      {
+        field: "Discontinued",
+        template: "<input name='Discontinued' class='checkbox' type='checkbox' data-bind='checked: Discontinued' #= Discontinued ? checked='checked' : '' # />",
+        width: "32px"
       },
+      { field: "ProductName" } ,
+      { field: "UnitPrice", title: "Unit Price", format: "{0:c}", width: "130px" },
+      { field: "UnitsInStock", title: "Units In Stock", width: "130px" },
+      { field: "Discontinued", width: "130px" }
+    ];
+
+    $scope.gridData = new kendo.data.ObservableArray(products);
+
+    $scope.mainGridOptions = {
       height: 550,
       scrollable: true,
       sortable: true,
       filterable: true,
-      columns: [
-        "ProductName",
-        { field: "UnitPrice", title: "Unit Price", format: "{0:c}", width: "130px" },
-        { field: "UnitsInStock", title: "Units In Stock", width: "130px" },
-        { field: "Discontinued", width: "130px" }
-      ]
+      selectable: true
     };
-
-    $("#itemDisplay").click(function(){
+    
+    $("#itemChange").click(function(){
       var grid = $("#grid").data("kendoGrid");
+      grid.items().each(function(idx) {
+        var item = grid.dataItem($(this));
+        if(item.UnitPrice > 20.0) {
+          console.log(item.ProductName);
+          item.Discontinued = true;
+        }
+      });
 
+      // $scope.$apply() template field 는 작동이 안됨
+      // http://jimhoskins.com/2012/12/17/angularjs-and-apply.html 블로그 참고바람
+      $scope.$apply();
 
+      grid.dataSource.read();
+      grid.refresh();
     });
   }
 </script>
 
 <div ng-controller="MyCtrl">
-  <div kendo-grid id="grid" k-options="mainGridOptions" ></div>
-  <button id="itemDisplay"> 아이템을 출력하세요. </button>
+  <div kendo-grid id="grid"
+       k-options="mainGridOptions"
+       k-columns="gridColumns"
+       k-data-source="gridData" ></div>
+  <button id="itemChange"> Unit Price가 $20 이상이면 체크하세요.</button>
 </div>
 
 </body>
